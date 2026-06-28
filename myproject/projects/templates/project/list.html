@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Наши Проекты</title>
+    <!-- Подключение стилей из статики -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <header class="header">
+        <h1>Портфолио проектов</h1>
+    </header>
+
+    <main class="container">
+        <!-- Сетка проектов -->
+        <div class="projects-grid">
+            {% for project in projects %}
+                <article class="project-card">
+                    <!-- Вывод изображения (с проверкой на существование) -->
+                    {% if project.image %}
+                        <div class="project-image-wrapper">
+                            <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-image">
+                        </div>
+                    {% endif %}
+                    
+                    <div class="project-content">
+                        <h2 class="project-title">{{ project.title }}</h2>
+                        <p class="project-date">Завершен: {{ project.completion_date|date:"d.m.Y" }}</p>
+                        <p class="project-description">{{ project.description|truncatewords:20 }}</p>
+                        
+                        <!-- Список технологий -->
+                        {% if project.technologies %}
+                            <div class="project-tags">
+                                <span class="tags-label">Технологии:</span> 
+                                {{ project.technologies }}
+                            </div>
+                        {% endif %}
+
+                        <!-- Ссылка на проект -->
+                        {% if project.project_url %}
+                            <a href="{{ project.project_url }}" target="_blank" class="project-link">Смотреть проект →</a>
+                        {% endif %}
+                    </div>
+                </article>
+            {% empty %}
+                <!-- Если список проектов пуст -->
+                <p class="no-projects">В данный момент нет активных проектов.</p>
+            {% endfor %}
+        </div>
+    </main>
+
+    <!-- Пример подключения JS из статики -->
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
